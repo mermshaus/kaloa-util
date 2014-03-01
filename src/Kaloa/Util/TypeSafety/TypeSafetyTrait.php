@@ -2,7 +2,7 @@
 
 namespace Kaloa\Util\TypeSafety;
 
-use IllegalArgumentException;
+use InvalidArgumentException;
 
 trait TypeSafetyTrait
 {
@@ -13,13 +13,13 @@ trait TypeSafetyTrait
     private function ensure($types, array $args)
     {
         if (!is_string($types)) {
-            throw new IllegalArgumentException('Type list must be of type string');
+            throw new InvalidArgumentException('Type list must be of type string');
         }
 
         $cnt = count($args);
 
         if (strlen($types) !== $cnt) {
-            throw new IllegalArgumentException('Type list length does not match argument count');
+            throw new InvalidArgumentException('Type list length does not match argument count');
         }
 
         $i = 0;
@@ -28,31 +28,31 @@ trait TypeSafetyTrait
             switch ($types[$i]) {
                 case 'b':
                     if (!is_bool($arg)) {
-                        throw new IllegalArgumentException('bool expected');
+                        throw new InvalidArgumentException('bool expected');
                     }
                     break;
 
                 case 'f':
                     if (!is_float($arg)) {
-                        throw new IllegalArgumentException('float expected');
+                        throw new InvalidArgumentException('float expected');
                     }
                     break;
 
                 case 'i':
                     if (!is_int($arg)) {
-                        throw new IllegalArgumentException('int expected');
+                        throw new InvalidArgumentException('int expected');
                     }
                     break;
 
                 case 'r':
                     if (!is_resource($arg)) {
-                        throw new IllegalArgumentException('resource expected');
+                        throw new InvalidArgumentException('resource expected');
                     }
                     break;
 
                 case 's':
                     if (!is_string($arg)) {
-                        throw new IllegalArgumentException('string expected');
+                        throw new InvalidArgumentException('string expected');
                     }
                     break;
 
@@ -61,7 +61,7 @@ trait TypeSafetyTrait
                     break;
 
                 default:
-                    throw new IllegalArgumentException('Unknown type at offset ' . $i . '. One of [bfirs-] expected');
+                    throw new InvalidArgumentException('Unknown type at offset ' . $i . '. One of [bfirs-] expected');
                     break;
             }
 
