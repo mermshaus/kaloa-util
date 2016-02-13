@@ -1,5 +1,5 @@
-/docs/
-/nbproject/
-/vendor/
-/composer.phar
-/composer.lock
+build
+docs
+nbproject
+vendor
+composer.lock

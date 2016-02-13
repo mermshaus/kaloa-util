@@ -1,4 +1,4 @@
-Kaloa Component Library for PHP -- Util
+# Kaloa Component Library for PHP -- Util
 
 The software is published under the MIT License (see LICENSE).
 
@@ -9,8 +9,12 @@ Marc Ermshaus <marc@ermshaus.org>
 
 Unit tests (run from project root directory):
 
-    $ phpunit .
+~~~ bash
+$ phpunit
+~~~
 
 Other tools:
 
-    $ phpmd ./library text codesize,design,naming
+~~~ bash
+$ phpmd ./library text codesize,design,naming
+~~~

@@ -4,7 +4,6 @@
     "description": "A collection of utility classes",
     "keywords": ["util"],
     "homepage": "http://www.kaloa.org/",
-    "version": "0.0.2",
     "license": "MIT",
     "authors": [
         {
@@ -14,6 +13,9 @@
     ],
     "require": {
         "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
         "psr-0": {
