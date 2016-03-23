@@ -146,18 +146,19 @@ EOT
             }
         )->uksortm(
             array(
-                function ($a, $b) { return $a < $b; },    // Order first dimension descending
-                function ($a, $b) { return $a > $b; }     // Order second dimension ascending
+                function ($a, $b) { return ($a < $b) ?  1 : -1; },    // Order first dimension descending
+                function ($a, $b) { return ($a < $b) ? -1 :  1; }     // Order second dimension ascending
             )
         )->usortm(
             array(
                 null,    // Skip first and second dimensions, only realign third
                 null,    //  (descending by length of an entry's title)
                 function ($a, $b) {
-                    $diff = strlen($a['title']) < strlen($b['title']);
+                    $sa = strlen($a['title']);
+                    $sb = strlen($b['title']);
 
-                    if (0 !== $diff) {
-                        return $diff;
+                    if ($sa !== $sb) {
+                        return $sb - $sa;
                     }
 
                     // Tie-breaker
