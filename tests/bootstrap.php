@@ -9,4 +9,6 @@ if (
         . "php composer.phar install\n");
 }
 
+require_once __DIR__ . '/Kaloa/Tests/Util/Foo.php';
+require_once __DIR__ . '/Kaloa/Tests/Util/FooSet.php';
 require_once __DIR__ . '/Kaloa/Tests/Util/TypeSafety/Dummy.php';

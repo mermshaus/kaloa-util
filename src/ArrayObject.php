@@ -9,26 +9,19 @@
 
 namespace Kaloa\Util;
 
-use ArrayObject;
-
-
+use ArrayObject as CoreArrayObject;
 
 /**
  * Adds grouping and multi-dimensional sorting functions to ArrayObject
+ *
+ * See: http://www.ermshaus.org/2010/03/php-kaloa-spl-arrayobject
  *
  * Please note: This class isn't the most efficient way to perform the
  * implemented operations. A more low-level approach to grouping will be
  * considerably faster and use less resources, sorting operations should be done
  * in the DMBS (if applicable).
- *
- * @author  Marc Ermshaus <marc@ermshaus.org>
- * @license http://www.gnu.org/licenses/ GPLv3
- * @link    http://ermshaus.org/2010/03/php-kaloa-spl-arrayobject See for
- *          examples and additional info
- * @see     ArrayObject
- * @version 2010-04-01
  */
-class ArrayObject extends SplArrayObject
+final class ArrayObject extends CoreArrayObject
 {
     /**
      * Adds possibility to pass multi-dimensional arrays to the constructor
@@ -124,85 +117,6 @@ class ArrayObject extends SplArrayObject
     }
 
     /**
-     * Recursively applies all provided sorting functions to their corresponding
-     * dimension of the array
-     *
-     * @param ArrayObject $a         Represents the current dimension
-     *        in the active array branch
-     * @param array                 $sortFuncs Holds the specified sorting
-     *        function for each dimension
-     * @param int                   $depth     Current dimension
-     * @param string                $sortMode  Possible values: 'a', 'k', ''
-     *        (= uasort, uksort, usort)
-     */
-    protected function _uxsortmRec(ArrayObject $a, array $sortFuncs,
-                                   $depth = 0, $sortMode = '')
-    {
-        $goOn = (count($sortFuncs) > $depth + 1);
-        $it   = $a->getIterator();
-
-        while ($it->valid()) {
-            if (null !== $sortFuncs[$depth]) {
-                if ($sortMode == 'a') {
-                    $it->current()->uasort($sortFuncs[$depth]);
-                } else if ($sortMode == 'k') {
-                    $it->current()->uksort($sortFuncs[$depth]);
-                } else {
-                    $it->current()->usort($sortFuncs[$depth]);
-                }
-            }
-
-            if ($goOn) {
-                $this->_uxsortmRec($it->current(), $sortFuncs, $depth + 1,
-                                   $sortMode);
-            }
-
-            $it->next();
-        }
-    }
-
-    /**
-     * Applies the first sorting function (if set) to the array's first
-     * dimension and starts the recursion to apply the other functions (if set)
-     *
-     * A sorting function is exactly the same as an usort callback. If you don't
-     * want to sort a specific dimension but one or more dimensions below it,
-     * pass <var>null</var> for each dimension that should be skipped.
-     * <var>array(null, null, $func)</var> would sort the third dimension but
-     * leave dimensions one and two untouched.
-     *
-     * @param  array|callback $funcs    Sorting function(s) to sort one or more
-     *         dimensions of the array by
-     * @param  string         $sortMode Possible values: 'a', 'k', '' (= uasort,
-     *         uksort, usort)
-     * @return ArrayObject Provides fluent interface
-     */
-    protected function _uxsortm($funcs, $sortMode = '')
-    {
-        if (!is_array($funcs)) {
-            $funcs = array($funcs);
-        }
-
-        if (count($funcs) > 0) {
-            if (null !== $funcs[0]) {
-                if ($sortMode == 'a') {
-                    $this->uasort($funcs[0]);
-                } else if ($sortMode == 'k') {
-                    $this->uksort($funcs[0]);
-                } else {
-                    $this->usort($funcs[0]);
-                }
-            }
-
-            if (count($funcs) > 1) {
-                $this->_uxsortmRec($this, $funcs, 1, $sortMode);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      *
      * @param  array|callback $funcs
      * @return ArrayObject Provides fluent interface
@@ -255,5 +169,84 @@ class ArrayObject extends SplArrayObject
         }
 
         return $ret;
+    }
+
+    /**
+     * Recursively applies all provided sorting functions to their corresponding
+     * dimension of the array
+     *
+     * @param ArrayObject $a         Represents the current dimension
+     *        in the active array branch
+     * @param array                 $sortFuncs Holds the specified sorting
+     *        function for each dimension
+     * @param int                   $depth     Current dimension
+     * @param string                $sortMode  Possible values: 'a', 'k', ''
+     *        (= uasort, uksort, usort)
+     */
+    private function _uxsortmRec(ArrayObject $a, array $sortFuncs,
+                                   $depth = 0, $sortMode = '')
+    {
+        $goOn = (count($sortFuncs) > $depth + 1);
+        $it   = $a->getIterator();
+
+        while ($it->valid()) {
+            if (null !== $sortFuncs[$depth]) {
+                if ($sortMode == 'a') {
+                    $it->current()->uasort($sortFuncs[$depth]);
+                } else if ($sortMode == 'k') {
+                    $it->current()->uksort($sortFuncs[$depth]);
+                } else {
+                    $it->current()->usort($sortFuncs[$depth]);
+                }
+            }
+
+            if ($goOn) {
+                $this->_uxsortmRec($it->current(), $sortFuncs, $depth + 1,
+                                   $sortMode);
+            }
+
+            $it->next();
+        }
+    }
+
+    /**
+     * Applies the first sorting function (if set) to the array's first
+     * dimension and starts the recursion to apply the other functions (if set)
+     *
+     * A sorting function is exactly the same as an usort callback. If you don't
+     * want to sort a specific dimension but one or more dimensions below it,
+     * pass <var>null</var> for each dimension that should be skipped.
+     * <var>array(null, null, $func)</var> would sort the third dimension but
+     * leave dimensions one and two untouched.
+     *
+     * @param  array|callback $funcs    Sorting function(s) to sort one or more
+     *         dimensions of the array by
+     * @param  string         $sortMode Possible values: 'a', 'k', '' (= uasort,
+     *         uksort, usort)
+     * @return ArrayObject Provides fluent interface
+     */
+    private function _uxsortm($funcs, $sortMode = '')
+    {
+        if (!is_array($funcs)) {
+            $funcs = array($funcs);
+        }
+
+        if (count($funcs) > 0) {
+            if (null !== $funcs[0]) {
+                if ($sortMode == 'a') {
+                    $this->uasort($funcs[0]);
+                } else if ($sortMode == 'k') {
+                    $this->uksort($funcs[0]);
+                } else {
+                    $this->usort($funcs[0]);
+                }
+            }
+
+            if (count($funcs) > 1) {
+                $this->_uxsortmRec($this, $funcs, 1, $sortMode);
+            }
+        }
+
+        return $this;
     }
 }

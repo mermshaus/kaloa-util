@@ -15,6 +15,10 @@ namespace Kaloa\Util\TypeSafety;
 function ensure($types, array $args)
 {
     static $obj = null;
-    if ($obj === null) $obj = new TypeSafety();
+
+    if (null === $obj) {
+        $obj = new TypeSafety();
+    }
+
     $obj->ensure($types, $args);
 }
