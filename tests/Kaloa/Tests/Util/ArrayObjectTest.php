@@ -177,6 +177,68 @@ EOT
 EOT;
 
         $this->assertEquals($expected, $this->flattenGroupedData($obj));
+
+
+        // Additional test for uasortm
+
+        $obj = new ArrayObject(array('a' => 1, 'b' => 3, 'c' => 2));
+        $obj->uasortm(function ($a, $b) { return ($a < $b) ? -1 : 1; });
+
+        $data = $obj->getArrayCopyRec();
+
+        $this->assertEquals('a-c-b', implode('-', array_keys($data)));
+        $this->assertEquals('1-2-3', implode('-', $data));
+
+
+        // Additional test for uasortm (with "recursion")
+
+        $obj = new ArrayObject(array(
+            'b' => array('x' => 3, 'z' => 2, 'y' => 1, 'w' => 4),
+            'a' => array('x' => 3, 'z' => 2, 'y' => 1),
+            'c' => array('x' => 3, 'z' => 2)
+        ));
+        $obj->uasortm(array(
+            function ($a, $b) { return (count($a) < count($b)) ? -1 : 1; },
+            function ($a, $b) { return ($a < $b) ? -1 : 1; }
+        ));
+
+        $data = $obj->getArrayCopyRec();
+
+        $this->assertEquals('c-a-b', implode('-', array_keys($data)));
+
+        $this->assertEquals('y-z-x-w', implode('-', array_keys($data['b'])));
+        $this->assertEquals('y-z-x'  , implode('-', array_keys($data['a'])));
+        $this->assertEquals('z-x'    , implode('-', array_keys($data['c'])));
+        $this->assertEquals('1-2-3-4', implode('-', $data['b']));
+        $this->assertEquals('1-2-3'  , implode('-', $data['a']));
+        $this->assertEquals('2-3'    , implode('-', $data['c']));
+
+
+        // Additional test for usortm
+
+        $obj = new ArrayObject(array('a' => 1, 'b' => 3, 'c' => 2));
+        $obj->usortm(function ($a, $b) { return ($a < $b) ? -1 : 1; });
+
+        $data = $obj->getArrayCopyRec();
+
+        $this->assertEquals('0-1-2', implode('-', array_keys($data)));
+        $this->assertEquals('1-2-3', implode('-', $data));
+    }
+
+    /**
+     *
+     */
+    public function testGetArrayCopyRec()
+    {
+        $input = array(range(1, 3), range(4, 6));
+
+        $obj = new ArrayObject($input);
+
+        $array = $obj->getArrayCopyRec();
+
+        $this->assertEquals(true, is_array($array));
+        $this->assertEquals('1-2-3', implode('-', $array[0]));
+        $this->assertEquals('4-5-6', implode('-', $array[1]));
     }
 
     /**
