@@ -49,10 +49,70 @@ class TypeSafetyTest extends PHPUnit_Framework_TestCase
     /**
      *
      */
+    public function testResourceParameter()
+    {
+        $ts = new TypeSafety();
+
+        $ts->ensure('r', array(STDIN));
+    }
+
+    /**
+     *
+     */
     public function testTrait()
     {
         $class = new Dummy();
 
         $class->run(1, '1', new stdClass(), 1.0, true);
+    }
+
+    public function testTypesNotStringFail()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $ts = new TypeSafety();
+        $ts->ensure(42, array());
+    }
+
+    public function testWrongArgumentCountFail()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $ts = new TypeSafety();
+        $ts->ensure('ii', array(42));
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function wrongDataTypeFailProvider()
+    {
+        return array(
+            array('b', array(1)),
+            array('f', array(1)),
+            array('i', array('1')),
+            array('r', array(1)),
+            array('s', array(1))
+        );
+    }
+
+    /**
+     * @dataProvider wrongDatatypeFailProvider
+     */
+    public function testWrongDataTypeFail($types, $args)
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $ts = new TypeSafety();
+        $ts->ensure($types, $args);
+    }
+
+    public function testUnknownTypeFail()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $ts = new TypeSafety();
+        $ts->ensure('x', array(42));
     }
 }

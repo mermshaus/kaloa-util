@@ -33,7 +33,7 @@ final class ArrayObject extends CoreArrayObject
      */
     public function __construct(array $array)
     {
-        foreach($array as $key => $value) {
+        foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $array[$key] = new self($value);
             }
@@ -183,9 +183,12 @@ final class ArrayObject extends CoreArrayObject
      * @param string                $sortMode  Possible values: 'a', 'k', ''
      *        (= uasort, uksort, usort)
      */
-    private function _uxsortmRec(ArrayObject $a, array $sortFuncs,
-                                   $depth = 0, $sortMode = '')
-    {
+    private function _uxsortmRec(
+        ArrayObject $a,
+        array $sortFuncs,
+        $depth = 0,
+        $sortMode = ''
+    ) {
         $goOn = (count($sortFuncs) > $depth + 1);
         $it   = $a->getIterator();
 
@@ -201,8 +204,12 @@ final class ArrayObject extends CoreArrayObject
             }
 
             if ($goOn) {
-                $this->_uxsortmRec($it->current(), $sortFuncs, $depth + 1,
-                                   $sortMode);
+                $this->_uxsortmRec(
+                    $it->current(),
+                    $sortFuncs,
+                    $depth + 1,
+                    $sortMode
+                );
             }
 
             $it->next();

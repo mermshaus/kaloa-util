@@ -16,46 +16,46 @@ use Closure;
  *
  * There will always be a single distinct root node
  */
-class Node
+final class Node
 {
-    protected $_content  = null;
-    protected $_children = array();
-    protected $_parent   = null;
+    private $content  = null;
+    private $children = array();
+    private $parent   = null;
 
     public function __construct($value)
     {
-        $this->_content = $value;
+        $this->content = $value;
     }
 
     public function addChild(Node $child)
     {
-        $this->_children[] = $child;
+        $this->children[] = $child;
         $child->setParent($this);
     }
 
     public function hasChildren()
     {
-        return (count($this->_children) > 0);
+        return (count($this->children) > 0);
     }
 
     public function setParent(Node $node)
     {
-        $this->_parent = $node;
+        $this->parent = $node;
     }
 
     public function getParent()
     {
-        return $this->_parent;
+        return $this->parent;
     }
 
     public function getChildren()
     {
-        return $this->_children;
+        return $this->children;
     }
 
     public function getContent()
     {
-        return $this->_content;
+        return $this->content;
     }
 
     /**
@@ -67,20 +67,18 @@ class Node
     {
         $value = $this->getContent();
 
-        if ($value === null) {
+        if (null === $value) {
             $value = 'null';
-        } else if (is_object($value) && method_exists($value, '__toString')) {
-            $value = (string) $value;
-        } else if (is_object($value)) {
+        } elseif (is_object($value)) {
             $value = get_class($value);
-        } else if (is_array($value)) {
+        } elseif (is_array($value)) {
             $value = 'Array';
-        } else {
-            //$value = 'Unknown';
         }
 
         $ret = str_repeat(' ', $level * 4) . $value . "\n";
+
         $children = $this->getChildren();
+
         foreach ($children as $child) {
             $ret .= $child->display($level + 1);
         }
@@ -88,19 +86,25 @@ class Node
         return $ret;
     }
 
+    /**
+     *
+     * @param Closure $expr
+     * @return array
+     */
     public function getNodesByFilter(Closure $expr)
     {
-        foreach ($this->_children as $child) {
+        $nodes = array();
+
+        foreach ($this->children as $child) {
             if ($expr($child->getContent())) {
-                return $child;
-            } else {
-                $test = $child->getNode($expr);
-                if ($test !== null) {
-                    return $test;
-                }
+                $nodes[] = $child;
+            }
+
+            foreach ($child->getNodesByFilter($expr) as $node) {
+                $nodes[] = $node;
             }
         }
 
-        return null;
+        return $nodes;
     }
 }
