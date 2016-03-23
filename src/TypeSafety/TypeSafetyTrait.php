@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the kaloa/util package.
+ *
+ * For full copyright and license information, please view the LICENSE file
+ * that was distributed with this source code.
+ */
+
 namespace Kaloa\Util\TypeSafety;
 
 use InvalidArgumentException;
@@ -62,7 +69,7 @@ trait TypeSafetyTrait
 
                 default:
                     throw new InvalidArgumentException('Unknown type at offset ' . $i . '. One of [bfirs-] expected');
-                    break;
+                    // no break
             }
 
             $i++;

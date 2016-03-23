@@ -1,10 +1,17 @@
 <?php
 
+/*
+ * This file is part of the kaloa/util package.
+ *
+ * For full copyright and license information, please view the LICENSE file
+ * that was distributed with this source code.
+ */
+
 namespace Kaloa\Tests\Util\TypeSafety;
 
-use PHPUnit_Framework_TestCase;
 use Kaloa\Util\TypeSafety as ts;
 use Kaloa\Util\TypeSafety\TypeSafety;
+use PHPUnit_Framework_TestCase;
 use stdClass;
 
 /**

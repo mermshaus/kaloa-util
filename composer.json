@@ -2,27 +2,30 @@
     "name": "kaloa/util",
     "type": "library",
     "description": "A collection of utility classes",
-    "keywords": ["util"],
-    "homepage": "http://www.kaloa.org/",
+    "keywords": ["util", "typesafety", "validation", "assert", "assertion"],
+    "homepage": "http://kaloa.ermshaus.org/",
     "license": "MIT",
     "authors": [
         {
             "name": "Marc Ermshaus",
-            "email": "marc@ermshaus.org"
+            "email": "marc@ermshaus.org",
+            "homepage": "http://www.ermshaus.org/"
         }
     ],
     "require": {
         "php": ">=5.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0",
+        "squizlabs/php_codesniffer": "~1.5",
+        "phpmd/phpmd": "~2.0"
     },
     "autoload": {
-        "psr-0": {
-            "Kaloa": "src"
+        "psr-4": {
+            "Kaloa\\Util\\": "src"
         },
         "files": [
-            "src/Kaloa/Util/TypeSafety/functions.php"
+            "src/TypeSafety/functions.php"
         ]
     }
 }
