@@ -153,7 +153,16 @@ EOT
             array(
                 null,    // Skip first and second dimensions, only realign third
                 null,    //  (descending by length of an entry's title)
-                function ($a, $b) { return strlen($a['title']) < strlen($b['title']); }
+                function ($a, $b) {
+                    $diff = strlen($a['title']) < strlen($b['title']);
+
+                    if (0 !== $diff) {
+                        return $diff;
+                    }
+
+                    // Tie-breaker
+                    return strcmp($a['title'], $b['title']);
+                }
             )
         );
 
