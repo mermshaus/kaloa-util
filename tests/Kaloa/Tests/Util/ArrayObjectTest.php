@@ -10,26 +10,16 @@
 namespace Kaloa\Tests\Util;
 
 use Kaloa\Util\ArrayObject;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-/**
- *
- */
-class ArrayObjectTest extends PHPUnit_Framework_TestCase
+class ArrayObjectTest extends TestCase
 {
-    /**
-     *
-     */
     public function testCanInstantiate()
     {
-        new ArrayObject(array(1, 2, 3));
+        self::assertInstanceOf(ArrayObject::class, new ArrayObject(array(1, 2, 3)));
     }
 
-    /**
-     *
-     * @return array
-     */
-    private function getDemoItems()
+    private function getDemoItems(): array
     {
         $items = array(
             array('year' => 2009, 'month' =>  9, 'title' => 'Hello World!'),
@@ -50,9 +40,6 @@ class ArrayObjectTest extends PHPUnit_Framework_TestCase
         return $items;
     }
 
-    /**
-     *
-     */
     public function testBasicGrouping()
     {
         $obj = new ArrayObject($this->getDemoItems());
@@ -73,9 +60,6 @@ EOT;
         $this->assertEquals($expected, $this->flattenGroupedData($obj));
     }
 
-    /**
-     *
-     */
     public function testAdvancedGrouping()
     {
         $obj = new ArrayObject($this->getDemoItems());
@@ -102,9 +86,6 @@ EOT;
         $this->assertEquals($expected, $this->flattenGroupedData($obj));
     }
 
-    /**
-     *
-     */
     public function testGroupingWithScalarValues()
     {
         $items = array('Carl', 'Susan', 'Cindy', 'Peter', 'Steve', 'Patricia', 'Sam');
@@ -133,9 +114,6 @@ EOT
 , $ret);
     }
 
-    /**
-     *
-     */
     public function testSorting()
     {
         $obj = new ArrayObject($this->getDemoItems());
@@ -225,9 +203,6 @@ EOT;
         $this->assertEquals('1-2-3', implode('-', $data));
     }
 
-    /**
-     *
-     */
     public function testGetArrayCopyRec()
     {
         $input = array(range(1, 3), range(4, 6));
@@ -241,12 +216,7 @@ EOT;
         $this->assertEquals('4-5-6', implode('-', $array[1]));
     }
 
-    /**
-     *
-     * @param ArrayObject $obj
-     * @return string
-     */
-    private function flattenGroupedData(ArrayObject $obj)
+    private function flattenGroupedData(ArrayObject $obj): string
     {
         $ret = '';
 

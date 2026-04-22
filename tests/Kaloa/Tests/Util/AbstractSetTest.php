@@ -10,10 +10,10 @@
 namespace Kaloa\Tests\Util;
 
 use Kaloa\Tests\Util\FooSet;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class AbstractSetTest extends PHPUnit_Framework_TestCase
+class AbstractSetTest extends TestCase
 {
     public function testAddingAndRemovingValues()
     {
@@ -60,7 +60,7 @@ class AbstractSetTest extends PHPUnit_Framework_TestCase
 
     public function testAddingWrongValueByMethodFails()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $set = new FooSet();
 
@@ -69,7 +69,7 @@ class AbstractSetTest extends PHPUnit_Framework_TestCase
 
     public function testAddingWrongValueByArrayAccessFails()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $set = new FooSet();
 

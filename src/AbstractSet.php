@@ -20,17 +20,9 @@ use IteratorAggregate;
  */
 abstract class AbstractSet implements ArrayAccess, Countable, IteratorAggregate
 {
-    /**
-     *
-     * @var string
-     */
-    protected $_managedClass = '';
+    protected string $_managedClass = '';
 
-    /**
-     *
-     * @var array
-     */
-    protected $_container = array();
+    protected array $_container = array();
 
     /**
      *
@@ -47,7 +39,8 @@ abstract class AbstractSet implements ArrayAccess, Countable, IteratorAggregate
         $this->offsetSet(null, $obj);
     }
 
-    public function offsetSet($offset, $value) {
+    public function offsetSet($offset, $value): void
+    {
         if (!$value instanceof $this->_managedClass) {
             throw new InvalidArgumentException('Argument has to be of type "'
                     . $this->_managedClass . '"');
@@ -60,29 +53,29 @@ abstract class AbstractSet implements ArrayAccess, Countable, IteratorAggregate
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->_container[$offset]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->_container[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return isset($this->_container[$offset])
                 ? $this->_container[$offset]
                 : null;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new ArrayIterator($this->_container);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->_container);
     }

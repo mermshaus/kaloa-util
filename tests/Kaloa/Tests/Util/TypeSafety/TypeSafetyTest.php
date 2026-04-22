@@ -11,24 +11,20 @@ namespace Kaloa\Tests\Util\TypeSafety;
 
 use Kaloa\Util\TypeSafety as ts;
 use Kaloa\Util\TypeSafety\TypeSafety;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- *
- */
-class TypeSafetyTest extends PHPUnit_Framework_TestCase
+class TypeSafetyTest extends TestCase
 {
     protected function dummyTestFunction($a, $b, stdClass $obj, $c, $d)
     {
         ts\ensure('is-fb', func_get_args());
     }
 
-    /**
-     *
-     */
     public function testFunction()
     {
+        $this->expectNotToPerformAssertions();
         $this->dummyTestFunction(1, '1', new stdClass(), 1.0, true);
     }
 
@@ -38,29 +34,25 @@ class TypeSafetyTest extends PHPUnit_Framework_TestCase
         $ts->ensure('is-fb', func_get_args());
     }
 
-    /**
-     *
-     */
     public function testClass()
     {
+        $this->expectNotToPerformAssertions();
         $this->dummyTestClass(1, '1', new stdClass(), 1.0, true);
     }
 
-    /**
-     *
-     */
     public function testResourceParameter()
     {
+        $this->expectNotToPerformAssertions();
+
         $ts = new TypeSafety();
 
         $ts->ensure('r', array(STDIN));
     }
 
-    /**
-     *
-     */
     public function testTrait()
     {
+        $this->expectNotToPerformAssertions();
+
         $class = new Dummy();
 
         $class->run(1, '1', new stdClass(), 1.0, true);
@@ -68,7 +60,7 @@ class TypeSafetyTest extends PHPUnit_Framework_TestCase
 
     public function testTypesNotStringFail()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $ts = new TypeSafety();
         $ts->ensure(42, array());
@@ -76,17 +68,13 @@ class TypeSafetyTest extends PHPUnit_Framework_TestCase
 
     public function testWrongArgumentCountFail()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $ts = new TypeSafety();
         $ts->ensure('ii', array(42));
     }
 
-    /**
-     *
-     * @return array
-     */
-    public function wrongDataTypeFailProvider()
+    public static function wrongDataTypeFailProvider(): array
     {
         return array(
             array('b', array(1)),
@@ -97,12 +85,10 @@ class TypeSafetyTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @dataProvider wrongDatatypeFailProvider
-     */
+    #[DataProvider('wrongDatatypeFailProvider')]
     public function testWrongDataTypeFail($types, $args)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $ts = new TypeSafety();
         $ts->ensure($types, $args);
@@ -110,7 +96,7 @@ class TypeSafetyTest extends PHPUnit_Framework_TestCase
 
     public function testUnknownTypeFail()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $ts = new TypeSafety();
         $ts->ensure('x', array(42));

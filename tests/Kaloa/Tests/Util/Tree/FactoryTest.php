@@ -10,17 +10,11 @@
 namespace Kaloa\Tests\Util\Tree;
 
 use Kaloa\Util\Tree\Factory;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- *
- */
-class FactoryTest extends PHPUnit_Framework_TestCase
+class FactoryTest extends TestCase
 {
-    /**
-     *
-     */
     public function testIntegrity()
     {
         $factory = new Factory();
@@ -36,9 +30,6 @@ class FactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, $node->getContent());
     }
 
-    /**
-     *
-     */
     public function testCanConstructWithWrongOrder()
     {
         $factory = new Factory();
@@ -53,12 +44,9 @@ class FactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $node->hasChildren());
     }
 
-    /**
-     *
-     */
     public function testInvalidElementCount()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException(\Exception::class);
 
         $factory = new Factory();
 
@@ -67,12 +55,9 @@ class FactoryTest extends PHPUnit_Framework_TestCase
         ));
     }
 
-    /**
-     *
-     */
     public function testInvalidStructure()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException(\Exception::class);
 
         $factory = new Factory();
 

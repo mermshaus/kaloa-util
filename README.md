@@ -11,32 +11,27 @@ $ composer require kaloa/util
 
 ## Requirements
 
-The following PHP versions are supported:
-
-- PHP 5.4
-- PHP 5.5
-- PHP 5.6
-- PHP 7
-- HHVM
+PHP 8.2 or later.
 
 
 ## Testing
 
 ~~~ bash
-$ ./vendor/bin/phpunit
+$ vendor/bin/phpunit
 ~~~
 
 Further quality assurance:
 
 ~~~ bash
-$ ./vendor/bin/phpcs --standard=PSR2 ./src
-$ ./vendor/bin/phpmd ./src text codesize,design,naming
+$ vendor/bin/phpcs --standard=PSR12 ./src
+$ vendor/bin/phpmd ./src text codesize,design,naming
+$ vendor/bin/phpstan analyse --level=max src
 ~~~
 
 
 ## Credits
 
-- [Marc Ermshaus](https://github.com/mermshaus)
+- [Marc Ermshaus](https://www.ermshaus.org/)
 
 
 ## License

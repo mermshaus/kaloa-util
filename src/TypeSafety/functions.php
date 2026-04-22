@@ -10,9 +10,9 @@
 namespace Kaloa\Util\TypeSafety;
 
 /**
- * @api
+ * @param array<mixed> $args
  */
-function ensure($types, array $args)
+function ensure(string $types, array $args): void
 {
     static $obj = null;
 

@@ -14,15 +14,10 @@ use InvalidArgumentException;
 trait TypeSafetyTrait
 {
     /**
-     * @param string $types
-     * @param array $args
+     * @param array<mixed> $args
      */
-    private function ensure($types, array $args)
+    private function ensure(string $types, array $args): void
     {
-        if (!is_string($types)) {
-            throw new InvalidArgumentException('Type list must be of type string');
-        }
-
         $cnt = count($args);
 
         if (strlen($types) !== $cnt) {

@@ -55,7 +55,7 @@ final class ArrayObject extends CoreArrayObject
      * Callback functions may take the element argument by reference and modify
      * it during execution (e. g. to remove any fields that will be grouped by).
      *
-     * @param  callback $func Function to group by
+     * @param  callable $func Function to group by
      * @return ArrayObject Provides fluent interface
      */
     public function groupBy($func)
@@ -64,7 +64,6 @@ final class ArrayObject extends CoreArrayObject
         $it  = $this->getIterator();
 
         while ($it->valid()) {
-
             if (is_object($it->current())) {
                 $key = call_user_func($func, $it->current());
             } else {
@@ -102,7 +101,7 @@ final class ArrayObject extends CoreArrayObject
     /**
      * Adds usort as an instance method
      *
-     * @param callback $cmp_function Function to sort by
+     * @param callable $cmp_function Function to sort by
      * @return boolean
      */
     public function usort($cmp_function)
@@ -118,7 +117,7 @@ final class ArrayObject extends CoreArrayObject
 
     /**
      *
-     * @param  array|callback $funcs
+     * @param  callable $funcs
      * @return ArrayObject Provides fluent interface
      */
     public function usortm($funcs)
@@ -129,7 +128,7 @@ final class ArrayObject extends CoreArrayObject
     /**
      *
      *
-     * @param  array|callback $funcs
+     * @param  callable $funcs
      * @return ArrayObject Provides fluent interface
      */
     public function uasortm($funcs)
@@ -139,7 +138,7 @@ final class ArrayObject extends CoreArrayObject
 
     /**
      *
-     * @param  array|callback $funcs
+     * @param  callable $funcs
      * @return ArrayObject Provides fluent interface
      */
     public function uksortm($funcs)
@@ -194,9 +193,9 @@ final class ArrayObject extends CoreArrayObject
 
         while ($it->valid()) {
             if (null !== $sortFuncs[$depth]) {
-                if ($sortMode == 'a') {
+                if ($sortMode === 'a') {
                     $it->current()->uasort($sortFuncs[$depth]);
-                } else if ($sortMode == 'k') {
+                } elseif ($sortMode === 'k') {
                     $it->current()->uksort($sortFuncs[$depth]);
                 } else {
                     $it->current()->usort($sortFuncs[$depth]);
@@ -226,7 +225,7 @@ final class ArrayObject extends CoreArrayObject
      * <var>array(null, null, $func)</var> would sort the third dimension but
      * leave dimensions one and two untouched.
      *
-     * @param  array|callback $funcs    Sorting function(s) to sort one or more
+     * @param  callable $funcs    Sorting function(s) to sort one or more
      *         dimensions of the array by
      * @param  string         $sortMode Possible values: 'a', 'k', '' (= uasort,
      *         uksort, usort)
@@ -240,9 +239,9 @@ final class ArrayObject extends CoreArrayObject
 
         if (count($funcs) > 0) {
             if (null !== $funcs[0]) {
-                if ($sortMode == 'a') {
+                if ($sortMode === 'a') {
                     $this->uasort($funcs[0]);
-                } else if ($sortMode == 'k') {
+                } elseif ($sortMode === 'k') {
                     $this->uksort($funcs[0]);
                 } else {
                     $this->usort($funcs[0]);
