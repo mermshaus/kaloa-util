@@ -2,7 +2,7 @@
     "name": "kaloa/util",
     "type": "library",
     "description": "A collection of utility classes",
-    "keywords": ["util", "typesafety", "validation", "assert", "assertion"],
+    "keywords": ["util"],
     "license": "MIT",
     "authors": [
         {
@@ -23,10 +23,7 @@
     "autoload": {
         "psr-4": {
             "Kaloa\\Util\\": "src"
-        },
-        "files": [
-            "src/TypeSafety/functions.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
