@@ -9,9 +9,19 @@
 
 namespace Kaloa\Tests\Util;
 
-use Kaloa\Tests\Util\FooSet;
+use Kaloa\Util\AbstractSet;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+
+final class Foo {}
+
+final class FooSet extends AbstractSet
+{
+    public function __construct()
+    {
+        $this->_managedClass = Foo::class;
+    }
+}
 
 class AbstractSetTest extends TestCase
 {

@@ -16,20 +16,27 @@ use InvalidArgumentException;
 use IteratorAggregate;
 
 /**
- *
+ * @template K of int|string
+ * @template T of object
+ * @implements ArrayAccess<K, T>
+ * @implements IteratorAggregate<K, T>
  */
 abstract class AbstractSet implements ArrayAccess, Countable, IteratorAggregate
 {
-    protected string $_managedClass = '';
+    /**
+     * @var class-string<T>
+     */
+    protected string $_managedClass;
 
+    /**
+     * @var array<T>
+     */
     protected array $_container = array();
 
     /**
-     *
-     * @param mixed $obj
-     * @throws InvalidArgumentException
+     * @param T $obj
      */
-    public function add($obj)
+    public function add(object $obj): void
     {
         if (!$obj instanceof $this->_managedClass) {
             throw new InvalidArgumentException('Argument has to be of type "'
@@ -65,9 +72,7 @@ abstract class AbstractSet implements ArrayAccess, Countable, IteratorAggregate
 
     public function offsetGet($offset): mixed
     {
-        return isset($this->_container[$offset])
-                ? $this->_container[$offset]
-                : null;
+        return $this->_container[$offset] ?? null;
     }
 
     public function getIterator(): \Traversable
