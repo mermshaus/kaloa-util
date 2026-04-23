@@ -36,4 +36,4 @@ $ vendor/bin/phpstan analyse --level=max src
 
 ## License
 
-The package is published under the MIT License. See [LICENSE](https://github.com/mermshaus/kaloa-util/blob/master/LICENSE) for full license info.
+The package is published under the MIT License. See [LICENSE](LICENSE) for full license info.
