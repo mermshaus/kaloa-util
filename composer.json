@@ -27,7 +27,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Kaloa\\Tests\\": "tests/Kaloa/Tests"
+            "Kaloa\\Tests\\Util\\": "tests"
         }
     }
 }
